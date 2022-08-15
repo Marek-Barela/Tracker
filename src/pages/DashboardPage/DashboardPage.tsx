@@ -1,22 +1,25 @@
-import { useUserIpInfoQuery, useProvidedIpInfoQuery } from "redux/api/userIpInfo";
+import { SearchBar } from "components";
+import styled from "styled-components";
+import { UserMapPosition, SelectedLocationMap } from "./components";
+import { Box } from "@mui/system";
+
+const SearchWrapper = styled.div`
+  padding: 20px 0;
+`;
 
 const DashboardPage = () => {
-  const { data } = useUserIpInfoQuery();
-  const { data: dataLocation } = useProvidedIpInfoQuery("134.201.250.155");
-
   return (
-    <div>
-      {data && (
-        <h1>
-          User ip: {data.ip} {data.city}{" "}
-        </h1>
-      )}
-      {dataLocation && (
-        <h1>
-          Provided ip info: {dataLocation.ip} {dataLocation.city}{" "}
-        </h1>
-      )}
-    </div>
+    <>
+      <Box>
+        <UserMapPosition />
+      </Box>
+      <SearchWrapper>
+        <SearchBar />
+      </SearchWrapper>
+      <Box>
+        <SelectedLocationMap />
+      </Box>
+    </>
   );
 };
 

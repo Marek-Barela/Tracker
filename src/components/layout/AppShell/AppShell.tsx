@@ -8,6 +8,7 @@ const drawerWidth = 280;
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
 }>(({ theme, open }) => ({
+  marginTop: "64px",
   flexGrow: 1,
   padding: theme.spacing(3),
   transition: theme.transitions.create("margin", {

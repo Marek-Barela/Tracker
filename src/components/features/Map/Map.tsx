@@ -1,16 +1,11 @@
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
 import styled from "styled-components";
-
-const MapBox = styled.div`
-  height: 600px;
-`;
+import type { Coordinates } from "types/coordinates";
 
 const MapWrapper = styled.div`
   height: 100%;
 `;
-
-type Coordinates = [number, number];
 
 interface MarkerPoint {
   id: number;
@@ -19,31 +14,52 @@ interface MarkerPoint {
 }
 
 interface MapProps {
-  defaultPosition: Coordinates;
+  defaultPosition?: Coordinates;
+  userPosition?: Coordinates;
   markers?: MarkerPoint[];
   draggable?: boolean;
   isControllingHistory?: boolean;
+  defaultZoom?: number;
+  latlng?: { lat: number; lng: number };
 }
 
-const Map = ({ defaultPosition, markers, draggable = true, isControllingHistory = false }: MapProps) => {
+const Map = ({
+  defaultPosition,
+  userPosition,
+  markers,
+  draggable = true,
+  isControllingHistory = false,
+  defaultZoom,
+  latlng,
+}: MapProps) => {
   return (
-    <MapBox>
-      <MapWrapper>
-        <MapContainer
-          dragging={draggable}
-          center={defaultPosition}
-          zoom={13}
-          scrollWheelZoom={false}
-          style={{ height: "100%", minHeight: "100%" }}
-        >
-          <MapContent defaultPosition={defaultPosition} markers={markers} isControllingHistory={isControllingHistory} />
-        </MapContainer>
-      </MapWrapper>
-    </MapBox>
+    <MapWrapper>
+      <MapContainer
+        dragging={draggable}
+        center={defaultPosition}
+        zoom={defaultZoom}
+        scrollWheelZoom={true}
+        style={{ height: "100%", minHeight: "100%" }}
+      >
+        <MapContent
+          userPosition={userPosition}
+          markers={markers}
+          isControllingHistory={isControllingHistory}
+          latlng={latlng}
+        />
+      </MapContainer>
+    </MapWrapper>
   );
 };
 
-const MapContent = ({ defaultPosition, markers, isControllingHistory }: MapProps) => {
+interface MapContentProps {
+  userPosition?: Coordinates;
+  markers?: MarkerPoint[];
+  isControllingHistory?: boolean;
+  latlng?: { lat: number; lng: number };
+}
+
+const MapContent = ({ userPosition, markers, isControllingHistory, latlng }: MapContentProps) => {
   const map = useMap();
   const [position, setPosition] = useState(() => map.getCenter());
   const [zoom, setZoom] = useState(() => map.getZoom());
@@ -61,6 +77,12 @@ const MapContent = ({ defaultPosition, markers, isControllingHistory }: MapProps
   }, [map]);
 
   useEffect(() => {
+    if (latlng === undefined) return;
+    if (latlng.lat === 0 && latlng.lng === 0) return;
+    map.setView([latlng.lat, latlng.lng]);
+  }, [latlng]);
+
+  useEffect(() => {
     if (isControllingHistory) {
       window.history.pushState(null, "", `@${position.lat},${position.lng},${zoom}z`);
       window.history.replaceState(null, "", `@${position.lat},${position.lng},${zoom}z`);
@@ -74,11 +96,13 @@ const MapContent = ({ defaultPosition, markers, isControllingHistory }: MapProps
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={defaultPosition}>
-        <Popup>
-          Hello there, 😊 <br /> According to ipstack this is your current position
-        </Popup>
-      </Marker>
+      {userPosition && (
+        <Marker position={userPosition}>
+          <Popup>
+            Hello there, 😊 <br /> According to ipstack this is your current position
+          </Popup>
+        </Marker>
+      )}
       {markers &&
         markers.map((marker) => (
           <Marker key={marker.id} position={marker.position}>
