@@ -80,6 +80,7 @@ const MapContent = ({ userPosition, markers, isControllingHistory, latlng }: Map
     if (latlng === undefined) return;
     if (latlng.lat === 0 && latlng.lng === 0) return;
     map.setView([latlng.lat, latlng.lng]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latlng]);
 
   useEffect(() => {
@@ -87,7 +88,7 @@ const MapContent = ({ userPosition, markers, isControllingHistory, latlng }: Map
       window.history.pushState(null, "", `@${position.lat},${position.lng},${zoom}z`);
       window.history.replaceState(null, "", `@${position.lat},${position.lng},${zoom}z`);
     }
-  }, [position, zoom]);
+  }, [position, zoom, isControllingHistory]);
 
   return (
     <>
