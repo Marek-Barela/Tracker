@@ -16,4 +16,4 @@ export const ipInfoApi = createApi({
   }),
 });
 
-export const { useUserIpInfoQuery, useProvidedIpInfoQuery } = ipInfoApi;
+export const { useUserIpInfoQuery, useProvidedIpInfoQuery, useLazyProvidedIpInfoQuery } = ipInfoApi;

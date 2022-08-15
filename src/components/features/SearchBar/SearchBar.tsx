@@ -1,6 +1,6 @@
 import { useCombobox } from "downshift";
-import { useProvidedIpInfoQuery } from "redux/api/userIpInfo";
-import React, { useEffect, useState } from "react";
+import { useLazyProvidedIpInfoQuery } from "redux/api/userIpInfo";
+import React, { useState } from "react";
 import { TextField, Box, List, ListItem, Button, ListItemText, Grow } from "@mui/material";
 import { styled } from "@mui/system";
 import { isValidIp } from "utils/isValidIpRegEx";
@@ -13,10 +13,12 @@ import { getCoordinatesFromUrl } from "utils/getCoordinatesFromUrl";
 
 const StyledList = styled(List)(({ theme }) => ({
   position: "absolute",
+  backgroundColor: theme.palette.common.white,
   borderRadius: theme.shape.borderRadius,
   border: `1px solid ${theme.palette.divider}`,
   width: "100%",
   marginTop: "10px",
+  zIndex: 100000,
 }));
 
 const getHistoryFilter = (inputValue: string) => {
@@ -30,11 +32,12 @@ const getHistoryFilter = (inputValue: string) => {
 };
 
 const SearchBar = () => {
-  const searchHistory = useAppSelector((state) => state.searchHistory);
-  const [serachValue, setSearchValue] = useState("");
-  const [skipInitial, setSkipInitial] = useState(true);
+  const dropdownList = useAppSelector((state) => [
+    //Select only unique values for dropdown
+    ...new Map(state.searchHistory.map((item) => [item["primaryText"], item])).values(),
+  ]);
   const [isError, setIsError] = useState(false);
-  const [items, setItems] = useState<HistoryTypes[]>(searchHistory);
+  const [items, setItems] = useState<HistoryTypes[]>(dropdownList);
   const dispatch = useAppDispatch();
 
   const {
@@ -49,7 +52,7 @@ const SearchBar = () => {
     inputValue,
   } = useCombobox({
     onInputValueChange({ inputValue }) {
-      setItems(searchHistory.filter(getHistoryFilter(inputValue || "")));
+      setItems(dropdownList.filter(getHistoryFilter(inputValue || "")));
     },
     items,
     itemToString(item) {
@@ -57,14 +60,22 @@ const SearchBar = () => {
     },
   });
 
-  const { data } = useProvidedIpInfoQuery(serachValue, { skip: skipInitial });
+  const [search] = useLazyProvidedIpInfoQuery();
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (isValidIp(inputValue)) {
-      setSearchValue(inputValue);
-      setSkipInitial(false);
+      search(inputValue, true).then((res) => {
+        if (res.data === undefined) return;
+        dispatch(
+          historyAdded({
+            primaryText: inputValue,
+            secondaryText: `${res.data.latitude || ""} ${res.data.longitude || ""}`,
+          })
+        );
+        dispatch(setLastSearchDetails({ ...res.data, zoom: 16 }));
+      });
       return;
     }
 
@@ -80,17 +91,6 @@ const SearchBar = () => {
 
     setIsError(true);
   };
-
-  useEffect(() => {
-    if (data === undefined) return;
-
-    if (isValidIp(inputValue)) {
-      dispatch(
-        historyAdded({ primaryText: inputValue, secondaryText: `${data.latitude || ""} ${data.longitude || ""}` })
-      );
-      dispatch(setLastSearchDetails({ ...data, zoom: 14 }));
-    }
-  }, [data]);
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -120,7 +120,7 @@ const SearchBar = () => {
             <>
               {items.map((item, index) => (
                 <ListItem
-                  key={`${item.primaryText}${index}`}
+                  key={`${item.id}${item.primaryText}${index}`}
                   sx={{
                     backgroundColor: highlightedIndex === index ? "#bde4ff" : "inherit",
                     cursor: "pointer",
