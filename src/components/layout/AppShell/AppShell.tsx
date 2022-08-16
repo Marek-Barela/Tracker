@@ -40,7 +40,7 @@ const AppShell = ({ children }: AppShellProps) => {
 
   useEffect(() => {
     theme.breakpoints.values.md > width ? setIsMobile(true) : setIsMobile(false);
-  }, [width]);
+  }, [width, theme]);
 
   return (
     <Box sx={{ display: "flex" }}>
