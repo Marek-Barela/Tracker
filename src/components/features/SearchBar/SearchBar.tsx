@@ -123,7 +123,7 @@ const SearchBar = () => {
         </Box>
       </form>
       <Grow in={isOpen}>
-        <StyledList {...getMenuProps()} sx={{ border: (!isOpen || items.length === 0) && "none" }}>
+        <StyledList {...getMenuProps()} sx={{ visibility: (!isOpen || items.length === 0) && "hidden" }}>
           {isOpen && (
             <>
               {items.map((item, index) => (
