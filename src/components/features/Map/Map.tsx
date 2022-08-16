@@ -94,7 +94,7 @@ const MapContent = ({ userPosition, markers, isControllingHistory, latlng, zoom 
       window.history.pushState(null, "", `@${position.lat},${position.lng},${mapZoom}z`);
       window.history.replaceState(null, "", `@${position.lat},${position.lng},${mapZoom}z`);
     }
-  }, [position, zoom, isControllingHistory]);
+  }, [position, mapZoom, isControllingHistory]);
 
   return (
     <>
