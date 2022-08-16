@@ -18,6 +18,7 @@ interface MapProps {
   userPosition?: Coordinates;
   markers?: MarkerPoint[];
   draggable?: boolean;
+  scrollable?: boolean;
   isControllingHistory?: boolean;
   defaultZoom?: number;
   latlng?: { lat: number; lng: number };
@@ -28,6 +29,7 @@ const Map = ({
   userPosition,
   markers,
   draggable = true,
+  scrollable = true,
   isControllingHistory = false,
   defaultZoom,
   latlng,
@@ -38,7 +40,7 @@ const Map = ({
         dragging={draggable}
         center={defaultPosition}
         zoom={defaultZoom}
-        scrollWheelZoom={true}
+        scrollWheelZoom={scrollable}
         style={{ height: "100%", minHeight: "100%" }}
       >
         <MapContent

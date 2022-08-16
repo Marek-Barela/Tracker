@@ -12,6 +12,8 @@ const UserMapPosition = () => {
           defaultPosition={[data.latitude, data.longitude]}
           userPosition={[data.latitude, data.longitude]}
           defaultZoom={16}
+          draggable={false}
+          scrollable={false}
         />
       )}
     </Box>
