@@ -1,6 +1,6 @@
 import { SearchBar } from "components";
 import styled from "styled-components";
-import { UserMapPosition, SelectedLocationMap } from "./components";
+import { UserMapPosition, SelectedLocationMap, UserLastSearchInfo, UserLocationInfo } from "./components";
 import { Box } from "@mui/system";
 
 const SearchWrapper = styled.div`
@@ -10,14 +10,16 @@ const SearchWrapper = styled.div`
 const DashboardPage = () => {
   return (
     <>
-      <Box>
+      <Box display="flex" gap="20px">
         <UserMapPosition />
+        <UserLocationInfo />
       </Box>
       <SearchWrapper>
         <SearchBar />
       </SearchWrapper>
-      <Box>
+      <Box display="flex" gap="20px">
         <SelectedLocationMap />
+        <UserLastSearchInfo />
       </Box>
     </>
   );
