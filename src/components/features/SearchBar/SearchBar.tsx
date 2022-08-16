@@ -72,6 +72,7 @@ const SearchBar = () => {
           historyAdded({
             primaryText: inputValue,
             secondaryText: `${res.data.latitude || ""} ${res.data.longitude || ""}`,
+            ...res.data,
           })
         );
         dispatch(setLastSearchDetails({ ...res.data, zoom: 16 }));
@@ -81,9 +82,16 @@ const SearchBar = () => {
 
     if (isValidUrl(inputValue)) {
       const coordinates = getCoordinatesFromUrl(inputValue);
-      if (coordinates === undefined) return;
+      if (coordinates === undefined) return setIsError(true);
+      if (coordinates.length !== 3) return setIsError(true);
       dispatch(
-        historyAdded({ primaryText: inputValue, secondaryText: `${coordinates[0] || ""} ${coordinates[1] || ""}` })
+        historyAdded({
+          primaryText: inputValue,
+          secondaryText: `${coordinates[0] || ""} ${coordinates[1] || ""}`,
+          latitude: coordinates[0],
+          longitude: coordinates[1],
+          zoom: coordinates[2],
+        })
       );
       dispatch(setLastSearchDetails({ latitude: coordinates[0], longitude: coordinates[1], zoom: coordinates[2] }));
       return;

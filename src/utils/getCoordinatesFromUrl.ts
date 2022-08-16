@@ -4,5 +4,7 @@ export const getCoordinatesFromUrl = (url: string) => {
 
   if (result !== null) {
     return result[0].substring(1).split(",");
+  } else {
+    return undefined;
   }
 };
