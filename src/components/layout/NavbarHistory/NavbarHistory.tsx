@@ -17,7 +17,11 @@ const DrawerHeader = styled(Box)(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-const NavbarHistory = () => {
+interface NavbarHistoryProps {
+  isMobile: boolean;
+}
+
+const NavbarHistory = ({ isMobile }: NavbarHistoryProps) => {
   const searchHistory = useAppSelector((state) => state.searchHistory);
   const isMenuOpen = useAppSelector((state) => state.openMenu);
   const dispatch = useAppDispatch();
@@ -40,6 +44,7 @@ const NavbarHistory = () => {
           width: drawerWidth,
           boxSizing: "border-box",
         },
+        position: isMobile ? "absolute" : "static",
       }}
       variant="persistent"
       anchor="left"
