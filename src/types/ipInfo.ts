@@ -1,32 +1,28 @@
-export interface Language {
-  code: string;
-  name: string;
-  native: string;
-}
-
-export interface Location {
-  geoname_id: number;
-  capital: string;
-  languages: Language[];
-  country_flag: string;
-  country_flag_emoji: string;
-  country_flag_emoji_unicode: string;
-  calling_code: string;
-  is_eu: boolean;
-}
-
 export interface IpInfoTypes {
   ip: string;
-  type: string;
-  continent_code: string;
-  continent_name: string;
-  country_code: string;
-  country_name: string;
-  region_code: string;
-  region_name: string;
+  version: string;
   city: string;
-  zip: string;
+  region: string;
+  region_code: string;
+  country: string;
+  country_name: string;
+  country_code: string;
+  country_code_iso3: string;
+  country_capital: string;
+  country_tld: string;
+  continent_code: string;
+  in_eu: boolean;
+  postal: string;
   latitude: number;
   longitude: number;
-  location: Location;
+  timezone: string;
+  utc_offset: string;
+  country_calling_code: string;
+  currency: string;
+  currency_name: string;
+  languages: string;
+  country_area: number;
+  country_population: number;
+  asn: string;
+  org: string;
 }

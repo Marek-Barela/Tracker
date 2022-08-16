@@ -4,14 +4,14 @@ import { IpInfoTypes } from "types/ipInfo";
 export const ipInfoApi = createApi({
   reducerPath: "ipInfo",
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://api.ipstack.com`,
+    baseUrl: `https://ipapi.co`,
   }),
   endpoints: (build) => ({
     userIpInfo: build.query<IpInfoTypes, void>({
-      query: () => `/check?access_key=${process.env.REACT_APP_IP_STACK_KEY}`,
+      query: () => `/json`,
     }),
     providedIpInfo: build.query<IpInfoTypes, string>({
-      query: (ip) => `/${ip}?access_key=${process.env.REACT_APP_IP_STACK_KEY}`,
+      query: (ip) => `/${ip}/json`,
     }),
   }),
 });

@@ -100,7 +100,7 @@ const MapContent = ({ userPosition, markers, isControllingHistory, latlng }: Map
       {userPosition && (
         <Marker position={userPosition}>
           <Popup>
-            Hello there, 😊 <br /> According to ipstack this is your current position
+            Hello there, 😊 <br /> According to ip api this is your current position
           </Popup>
         </Marker>
       )}
