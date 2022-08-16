@@ -1,37 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface Language {
-  code?: string | null;
-  name?: string | null;
-  native?: string | null;
-}
-
-interface Location {
-  geoname_id?: number | null;
-  capital?: string | null;
-  languages?: Language[] | null;
-  country_flag?: string | null;
-  country_flag_emoji?: string | null;
-  country_flag_emoji_unicode?: string | null;
-  calling_code?: string | null;
-  is_eu?: boolean | null;
-}
-
 export interface LastSearchDetailsTypes {
-  ip?: string | null;
-  type?: string | null;
-  continent_code?: string | null;
-  continent_name?: string | null;
-  country_code?: string | null;
-  country_name?: string | null;
-  region_code?: string | null;
-  region_name?: string | null;
-  city?: string | null;
-  zip?: string | null;
-  latitude?: number | null;
-  longitude?: number | null;
-  location?: Location | null;
-  zoom?: number | null;
+  ip?: string;
+  version?: string;
+  city?: string;
+  region?: string;
+  region_code?: string;
+  country?: string;
+  country_name?: string;
+  country_code?: string;
+  country_code_iso3?: string;
+  country_capital?: string;
+  country_tld?: string;
+  continent_code?: string;
+  in_eu?: boolean;
+  postal?: string;
+  latitude?: number;
+  longitude?: number;
+  timezone?: string;
+  utc_offset?: string;
+  country_calling_code?: string;
+  currency?: string;
+  currency_name?: string;
+  languages?: string;
+  country_area?: number;
+  country_population?: number;
+  asn?: string;
+  org?: string;
+  zoom?: number;
 }
 
 const initialState: LastSearchDetailsTypes = {};

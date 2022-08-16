@@ -1,10 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { IpInfoTypes } from "types/ipInfo";
 
-export interface HistoryTypes {
+export interface History {
   id: number;
   primaryText: string;
   secondaryText: string;
 }
+
+export type HistoryTypes = History & IpInfoTypes;
 
 const initialState: HistoryTypes[] = [];
 
@@ -17,6 +20,7 @@ const historySlice = createSlice({
         id: Date.now(),
         primaryText: action.payload.primaryText,
         secondaryText: action.payload.secondaryText,
+        ...action.payload,
       });
     },
   },

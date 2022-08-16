@@ -4,6 +4,8 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { Box, Drawer, List, Divider, IconButton, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { useAppSelector, useAppDispatch } from "hooks/useRedux";
 import { setMenuOpen } from "redux/slices/openMenu";
+import { HistoryTypes } from "redux/slices/searchHistory";
+import { setLastSearchDetails } from "redux/slices/lastSearchDetails";
 
 const drawerWidth = 280;
 
@@ -23,6 +25,10 @@ const NavbarHistory = () => {
 
   const handleDrawerClose = () => {
     dispatch(setMenuOpen(false));
+  };
+
+  const handleHistoryClick = (historyItem: HistoryTypes) => {
+    dispatch(setLastSearchDetails({ ...historyItem }));
   };
 
   return (
@@ -48,7 +54,7 @@ const NavbarHistory = () => {
       <List>
         {searchHistory.length !== 0 ? (
           searchHistory.map((historyItem) => (
-            <ListItem key={historyItem.id} disablePadding>
+            <ListItem key={historyItem.id} disablePadding onClick={() => handleHistoryClick(historyItem)}>
               <ListItemButton>
                 <ListItemText
                   primary={historyItem.primaryText}
