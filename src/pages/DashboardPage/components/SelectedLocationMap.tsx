@@ -8,7 +8,7 @@ const SelectedLocationMap = () => {
   const searchDetails = useAppSelector((state) => state.lastSearchDetails);
 
   return (
-    <Box width="60%" height="300px">
+    <Box height="300px">
       {data && (
         <Map
           defaultPosition={[data.latitude, data.longitude]}

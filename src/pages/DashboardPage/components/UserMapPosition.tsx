@@ -6,7 +6,7 @@ const UserMapPosition = () => {
   const { data } = useUserIpInfoQuery();
 
   return (
-    <Box width="60%" height="300px">
+    <Box height="300px">
       {data && (
         <Map
           defaultPosition={[data.latitude, data.longitude]}

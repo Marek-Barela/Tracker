@@ -1,7 +1,7 @@
 import { SearchBar } from "components";
 import styled from "styled-components";
 import { UserMapPosition, SelectedLocationMap, UserLastSearchInfo, UserLocationInfo } from "./components";
-import { Box } from "@mui/system";
+import Grid from "@mui/system/Unstable_Grid";
 
 const SearchWrapper = styled.div`
   padding: 20px 0;
@@ -10,17 +10,25 @@ const SearchWrapper = styled.div`
 const DashboardPage = () => {
   return (
     <>
-      <Box display="flex" gap="20px">
-        <UserMapPosition />
-        <UserLocationInfo />
-      </Box>
-      <SearchWrapper>
-        <SearchBar />
-      </SearchWrapper>
-      <Box display="flex" gap="20px">
-        <SelectedLocationMap />
-        <UserLastSearchInfo />
-      </Box>
+      <Grid container spacing={2}>
+        <Grid xs={12} md={6}>
+          <UserMapPosition />
+        </Grid>
+        <Grid xs={12} md={6}>
+          <UserLocationInfo />
+        </Grid>
+        <Grid xs={12}>
+          <SearchWrapper>
+            <SearchBar />
+          </SearchWrapper>
+        </Grid>
+        <Grid xs={12} md={6}>
+          <SelectedLocationMap />
+        </Grid>
+        <Grid xs={12} md={6}>
+          <UserLastSearchInfo />
+        </Grid>
+      </Grid>
     </>
   );
 };
