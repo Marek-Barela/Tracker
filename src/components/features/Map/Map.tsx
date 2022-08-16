@@ -22,6 +22,7 @@ interface MapProps {
   isControllingHistory?: boolean;
   defaultZoom?: number;
   latlng?: { lat: number; lng: number };
+  zoom?: number;
 }
 
 const Map = ({
@@ -33,6 +34,7 @@ const Map = ({
   isControllingHistory = false,
   defaultZoom,
   latlng,
+  zoom = 16,
 }: MapProps) => {
   return (
     <MapWrapper>
@@ -48,6 +50,7 @@ const Map = ({
           markers={markers}
           isControllingHistory={isControllingHistory}
           latlng={latlng}
+          zoom={zoom}
         />
       </MapContainer>
     </MapWrapper>
@@ -59,12 +62,13 @@ interface MapContentProps {
   markers?: MarkerPoint[];
   isControllingHistory?: boolean;
   latlng?: { lat: number; lng: number };
+  zoom: number;
 }
 
-const MapContent = ({ userPosition, markers, isControllingHistory, latlng }: MapContentProps) => {
+const MapContent = ({ userPosition, markers, isControllingHistory, latlng, zoom }: MapContentProps) => {
   const map = useMap();
   const [position, setPosition] = useState(() => map.getCenter());
-  const [zoom, setZoom] = useState(() => map.getZoom());
+  const [mapZoom, setMapZoom] = useState(() => map.getZoom());
 
   useEffect(() => {
     map.locate().on("moveend", () => {
@@ -74,21 +78,21 @@ const MapContent = ({ userPosition, markers, isControllingHistory, latlng }: Map
 
   useEffect(() => {
     map.locate().on("zoomend", () => {
-      setZoom(map.getZoom());
+      setMapZoom(map.getZoom());
     });
   }, [map]);
 
   useEffect(() => {
     if (latlng === undefined) return;
     if (latlng.lat === 0 && latlng.lng === 0) return;
-    map.setView([latlng.lat, latlng.lng]);
+    map.setView([latlng.lat, latlng.lng], zoom);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latlng]);
 
   useEffect(() => {
     if (isControllingHistory) {
-      window.history.pushState(null, "", `@${position.lat},${position.lng},${zoom}z`);
-      window.history.replaceState(null, "", `@${position.lat},${position.lng},${zoom}z`);
+      window.history.pushState(null, "", `@${position.lat},${position.lng},${mapZoom}z`);
+      window.history.replaceState(null, "", `@${position.lat},${position.lng},${mapZoom}z`);
     }
   }, [position, zoom, isControllingHistory]);
 

@@ -12,9 +12,10 @@ const SelectedLocationMap = () => {
       {data && (
         <Map
           defaultPosition={[data.latitude, data.longitude]}
-          defaultZoom={searchDetails.zoom || 16}
+          defaultZoom={16}
           latlng={{ lat: searchDetails.latitude || 0, lng: searchDetails.longitude || 0 }}
           isControllingHistory
+          zoom={searchDetails.zoom || 16}
         />
       )}
     </Box>
